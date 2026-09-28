@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Transaction History{% endblock %}
+{% block content %}
+<div class="card wide">
+    <h2>Transaction History</h2>
+    {% if transactions %}
+    <table>
+        <thead>
+            <tr>
+                <th>Date/Time</th>
+                <th>Sender</th>
+                <th>Receiver</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Direction</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in transactions %}
+            <tr>
+                <td>{{ t['timestamp'] }}</td>
+                <td>{{ t['sender'] }}</td>
+                <td>{{ t['receiver'] }}</td>
+                <td>Rs. {{ "%.2f"|format(t['amount']) }}</td>
+                <td>{{ t['status'] }}</td>
+                <td>
+                    {% if t['sender'] == session.get('username') %}
+                        <span class="tag out">Sent</span>
+                    {% else %}
+                        <span class="tag in">Received</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No transactions yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
